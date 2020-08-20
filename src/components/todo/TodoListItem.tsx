@@ -1,5 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { TodoListItemI } from "./types";
+import { X } from "react-feather";
+import styled from "@emotion/styled";
 
 type TodoListItemProps = TodoListItemI & {
   onToggle(id: number): void;
@@ -13,13 +15,55 @@ const TodoListItem = ({
   onToggle,
   onRemove,
 }: TodoListItemProps) => {
+  const memoizedText = useMemo(() => <StyledText>{text}</StyledText>, [text]);
+  const memoizedCloseButton = useMemo(
+    () => (
+      <StyledButton onClick={() => onRemove(id)}>
+        <X />
+      </StyledButton>
+    ),
+    [onRemove, id]
+  );
   return (
-    <li>
+    <StyledBlock>
       <input type="checkbox" checked={checked} onChange={() => onToggle(id)} />
-      {text}
-      <button onClick={() => onRemove(id)}>X</button>
-    </li>
+      {memoizedText}
+      {memoizedCloseButton}
+    </StyledBlock>
   );
 };
 
 export default memo(TodoListItem);
+
+const StyledBlock = styled.li`
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const StyledText = styled.span`
+  flex: 1 1 0;
+  white-space: nowrap;
+  font-size: 20px;
+  margin-left: 12px;
+`;
+
+const StyledButton = styled.button`
+  padding: 4px;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+  &:active {
+    background-color: #f0f0f0;
+  }
+`;

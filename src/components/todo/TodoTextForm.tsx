@@ -1,55 +1,60 @@
 import React, {
-  ChangeEventHandler,
   KeyboardEventHandler,
   memo,
   MouseEventHandler,
   useCallback,
-  useState,
+  useRef,
 } from "react";
+import Input from "../common/Input";
+import styled from "@emotion/styled";
 
 type TodoTextFormProps = {
   onAdd(text: string): void;
 };
 
 const TodoTextForm = ({ onAdd }: TodoTextFormProps) => {
-  const [text, setText] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleAdd = useCallback(
-    (text) => {
-      if (typeof onAdd === "function") {
-        onAdd(text);
-        setText("");
+  const handleAdd = useCallback(() => {
+    if (typeof onAdd === "function") {
+      if (inputRef.current) {
+        onAdd(inputRef.current.value);
+        inputRef.current.value = "";
       }
-    },
-    [onAdd]
-  );
-
-  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setText(e.currentTarget.value);
-    },
-    []
-  );
+    }
+  }, [onAdd]);
 
   const handleKeyPress = useCallback<KeyboardEventHandler>(
     (e) => {
       if (e.key === "Enter") {
-        handleAdd(text);
+        handleAdd();
       }
     },
-    [handleAdd, text]
+    [handleAdd]
   );
 
   const handleClick = useCallback<MouseEventHandler>(() => {
-    handleAdd(text);
-  }, [handleAdd, text]);
+    handleAdd();
+  }, [handleAdd]);
 
   return (
-    <div>
-      <input value={text} onKeyPress={handleKeyPress} onChange={handleChange} />
+    <StyledBlock>
+      <TodoTextInput
+        ref={inputRef}
+        onKeyPress={handleKeyPress}
+        placeholder={"Input a task here."}
+      />
       <button onClick={handleClick}>Add</button>
-    </div>
+    </StyledBlock>
   );
 };
 
 export default memo(TodoTextForm);
+
+const StyledBlock = styled.div`
+  display: flex;
+`;
+
+const TodoTextInput = styled(Input)`
+  flex: 1 1 0;
+`;
