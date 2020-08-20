@@ -15,6 +15,7 @@ const StyledInput = styled.input`
   line-height: 24px;
   padding: 8px 14px;
   border: 1px solid #d9d9d9;
+  outline: none;
   border-radius: 0;
   &:hover {
     border-color: #bfbfbf;
