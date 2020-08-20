@@ -11,10 +11,15 @@ const Input = forwardRef<
 export default Input;
 
 const StyledInput = styled.input`
+  font-size: 16px;
+  line-height: 24px;
   padding: 8px 14px;
   border: 1px solid #d9d9d9;
   border-radius: 0;
+  &:hover {
+    border-color: #bfbfbf;
+  }
   &:focus {
-    border: 1px solid #1890ff;
+    border-color: #1890ff;
   }
 `;

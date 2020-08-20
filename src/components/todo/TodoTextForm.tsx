@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Input from "../common/Input";
 import styled from "@emotion/styled";
+import Button from "../common/Button";
 
 type TodoTextFormProps = {
   onAdd(text: string): void;
@@ -44,7 +45,7 @@ const TodoTextForm = ({ onAdd }: TodoTextFormProps) => {
         onKeyPress={handleKeyPress}
         placeholder={"Input a task here."}
       />
-      <button onClick={handleClick}>Add</button>
+      <Button onClick={handleClick}>Add</Button>
     </StyledBlock>
   );
 };
@@ -53,8 +54,10 @@ export default memo(TodoTextForm);
 
 const StyledBlock = styled.div`
   display: flex;
+  margin-bottom: 16px;
 `;
 
 const TodoTextInput = styled(Input)`
   flex: 1 1 0;
+  margin-right: 8px;
 `;

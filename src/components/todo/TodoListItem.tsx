@@ -15,7 +15,10 @@ const TodoListItem = ({
   onToggle,
   onRemove,
 }: TodoListItemProps) => {
-  const memoizedText = useMemo(() => <StyledText>{text}</StyledText>, [text]);
+  const memoizedText = useMemo(
+    () => <StyledText checked={checked}>{text}</StyledText>,
+    [text, checked]
+  );
   const memoizedCloseButton = useMemo(
     () => (
       <StyledButton onClick={() => onRemove(id)}>
@@ -44,11 +47,15 @@ const StyledBlock = styled.li`
   width: 100%;
 `;
 
-const StyledText = styled.span`
+const StyledText = styled.span<Pick<TodoListItemProps, "checked">>`
   flex: 1 1 0;
   white-space: nowrap;
-  font-size: 20px;
+  font-size: 16px;
+  line-height: 24px;
   margin-left: 12px;
+  text-decoration: ${(props) => (props.checked ? "line-through" : "none")};
+  color: ${(props) =>
+    props.checked ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.85)"};
 `;
 
 const StyledButton = styled.button`
