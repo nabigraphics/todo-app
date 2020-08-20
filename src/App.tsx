@@ -7,14 +7,16 @@ import TodoListItem from "./components/todo/TodoListItem";
 import { TodoListItemI } from "./components/todo/types";
 
 const App = () => {
+  const [count, setCount] = useState(0);
   const [list, setList] = useState<TodoListItemI[]>([]);
 
   const handleAdd = useCallback(
     (text) => {
       if (text.trim() === "") return;
-      setList(list.concat({ id: list.length, text, checked: false }));
+      setList(list.concat({ id: count, text, checked: false }));
+      setCount(count + 1);
     },
-    [list]
+    [list, count]
   );
 
   const handleToggle = useCallback(
