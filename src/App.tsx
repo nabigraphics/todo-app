@@ -21,7 +21,7 @@ const App = () => {
 
   const handleToggle = useCallback(
     (id) => {
-      const index = list.findIndex((fItem) => fItem.id === id);
+      const index = list.findIndex((item) => item.id === id);
       const newList = [...list];
       if (index > -1) {
         const selected = list[index];
