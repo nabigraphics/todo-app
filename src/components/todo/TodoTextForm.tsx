@@ -59,5 +59,4 @@ const StyledBlock = styled.div`
 
 const TodoTextInput = styled(Input)`
   flex: 1 1 0;
-  margin-right: 8px;
 `;
