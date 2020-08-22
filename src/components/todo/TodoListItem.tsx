@@ -1,9 +1,9 @@
 import React, { memo, useMemo } from "react";
 import { TodoListItemI } from "./types";
-import { X } from "react-feather";
+import { X, Circle, CheckCircle } from "react-feather";
 import styled from "@emotion/styled";
 
-type TodoListItemProps = TodoListItemI & {
+export type TodoListItemProps = TodoListItemI & {
   onToggle(id: number): void;
   onRemove(id: number): void;
 };
@@ -16,20 +16,33 @@ const TodoListItem = ({
   onRemove,
 }: TodoListItemProps) => {
   const memoizedText = useMemo(
-    () => <StyledText checked={checked}>{text}</StyledText>,
+    () => (
+      <StyledText title={text} checked={checked}>
+        {text}
+      </StyledText>
+    ),
     [text, checked]
   );
   const memoizedCloseButton = useMemo(
     () => (
-      <StyledButton onClick={() => onRemove(id)}>
+      <StyledButton
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(id);
+        }}
+      >
         <X />
       </StyledButton>
     ),
     [onRemove, id]
   );
   return (
-    <StyledBlock>
-      <input type="checkbox" checked={checked} onChange={() => onToggle(id)} />
+    <StyledBlock onClick={() => onToggle(id)}>
+      {checked ? (
+        <CheckCircle color={"#52c41a"} />
+      ) : (
+        <Circle color={"#d9d9d9"} />
+      )}
       {memoizedText}
       {memoizedCloseButton}
     </StyledBlock>
@@ -45,6 +58,7 @@ const StyledBlock = styled.li`
   display: inline-flex;
   align-items: center;
   width: 100%;
+  cursor: pointer;
 `;
 
 const StyledText = styled.span<Pick<TodoListItemProps, "checked">>`
@@ -56,6 +70,8 @@ const StyledText = styled.span<Pick<TodoListItemProps, "checked">>`
   text-decoration: ${(props) => (props.checked ? "line-through" : "none")};
   color: ${(props) =>
     props.checked ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.85)"};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const StyledButton = styled.button`

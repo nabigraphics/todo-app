@@ -43,7 +43,7 @@ const TodoTextForm = ({ onAdd }: TodoTextFormProps) => {
       <TodoTextInput
         ref={inputRef}
         onKeyPress={handleKeyPress}
-        placeholder={"Input a task here."}
+        placeholder={"What needs to be done?"}
       />
       <Button onClick={handleClick}>Add</Button>
     </StyledBlock>
